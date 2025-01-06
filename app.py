@@ -19,6 +19,14 @@ def save_posts(posts):
         return json.dump(posts, file, indent=4)
 
 
+@app.route('/')
+def index():
+    """Rendering the index template
+    Homepage"""
+    blog_posts = load_posts()
+    return render_template('index.html', posts=blog_posts)
+
+
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     """Add option for a post
