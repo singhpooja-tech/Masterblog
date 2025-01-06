@@ -4,9 +4,21 @@ import json
 app = Flask(__name__)
 
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+def load_posts():
+    """Loading the json file"""
+    try:
+        with open('blog_posts.json', 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+
+
+def save_posts(posts):
+    """Saving to json file"""
+    with open('blog_posts.json', 'w', encoding='utf-8') as file:
+        return json.dump(posts, file, indent=4)
+
+
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     """Add option for a post
@@ -29,6 +41,7 @@ def add():
         return redirect(url_for('index'))
 
     return render_template('add.html')
+
 
 @app.route('/delete/<int:post_id>')
 def delete(post_id):
